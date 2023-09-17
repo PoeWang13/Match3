@@ -1,11 +1,13 @@
 ﻿using DG.Tweening;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random;
 using System.Linq;
 
+/// <summary>
+/// It is used to replace tiles after they are destroyed.
+/// </summary>
 [Serializable]
 public class SwapTile
 {
@@ -231,7 +233,12 @@ public class Board_Manager : MonoBehaviour
         return false;
         //return Array.IndexOf(tile1.MyNeighbors, tile2.MyBoardTile) != -1;
     }
-
+	
+	[ContextMenu("Swap Tile")]
+	private void SwapTile()
+	{
+		SwapTile(choosedTiles[0], choosedTiles[1], false);
+	}
 	/// <summary>
 	/// Swap choosing tile
 	/// </summary>
@@ -284,11 +291,6 @@ public class Board_Manager : MonoBehaviour
 				CheckMatch();
 			}
 		});
-	}
-	[ContextMenu("Swap Tile")]
-	private void SwapTile()
-	{
-		SwapTile(choosedTiles[0], choosedTiles[1], false);
 	}
 
 	/// <summary>
@@ -515,7 +517,7 @@ public class Board_Manager : MonoBehaviour
 	private void AddScore(int point, int controllingListCount)
 	{
 		scoreMulti++;
-		Canvas_Manager.Instance.OpenHitCountAnimator(scoreMulti);
+		Canvas_Manager.Instance.OpenHitCountAnimation(scoreMulti);
 		scoreAdd += point * scoreMulti * controllingListCount;
 	}
 	public void ClearMatchControlling()

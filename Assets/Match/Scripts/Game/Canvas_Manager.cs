@@ -90,20 +90,19 @@ public class Canvas_Manager : MonoBehaviour
             endValue: Board_Manager.Instance.ScoreAdd, duration: DoTweenDuration)
             .OnComplete(() => { Board_Manager.Instance.ClearMatchControlling(); });
     }
-    public void OpenHitCountAnimator(int hitCount)
+    public void OpenHitCountAnimation(int hitCount)
     {
         if (hitCount == 1)
         {
             return;
         }
-        Debug.Log(hitCount);
         panelHit.SetActive(true);
         textHit.text = "Counter Hit " + hitCount;
         hitAnimator.SetInteger("Hit", Random.Range(1, 3));
     }
-    public void CloseHitCountAnimator()
+    // Add Hit Counter animation for event.
+    public void CloseHitCountAnimation()
     {
-        Debug.Log("CloseHitCountAnimator");
         hitAnimator.SetInteger("Hit", 0);
         panelHit.SetActive(false);
     }

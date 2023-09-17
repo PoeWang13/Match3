@@ -78,7 +78,7 @@ public class Tile : MonoBehaviour
 		myTextLock.gameObject.SetActive(myBoardTile.lockCount > 1);
 		myImageLock.gameObject.SetActive(myBoardTile.lockCount != 0);
 	}
-	// Tile prefabindaki butona atandı
+	// Add Tile prefab button.
 	public void ChooseTile()
 	{
 		// Dont choose if tile locked.
