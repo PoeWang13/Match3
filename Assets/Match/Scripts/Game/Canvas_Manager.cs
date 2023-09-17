@@ -1,8 +1,6 @@
 using TMPro;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class Canvas_Manager : MonoBehaviour
 {
@@ -11,11 +9,17 @@ public class Canvas_Manager : MonoBehaviour
     private const float DoTweenDuration = 0.1f;
 
     [SerializeField] private Sprite lockIcon;
-    public Sprite LockIcon { get => lockIcon; }
 
+    [Space]
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private Transform tileParent;
     [SerializeField] private TextMeshProUGUI textScore;
+
+    [Space]
+    [SerializeField] private Animator hitAnimator;
+    [SerializeField] private GameObject panelHit;
+    [SerializeField] private TextMeshProUGUI textHit;
+    public Sprite LockIcon { get => lockIcon; }
     private void Awake()
     {
         if (instance == null)
@@ -85,5 +89,22 @@ public class Canvas_Manager : MonoBehaviour
             startValue: 0, 
             endValue: Board_Manager.Instance.ScoreAdd, duration: DoTweenDuration)
             .OnComplete(() => { Board_Manager.Instance.ClearMatchControlling(); });
+    }
+    public void OpenHitCountAnimator(int hitCount)
+    {
+        if (hitCount == 1)
+        {
+            return;
+        }
+        Debug.Log(hitCount);
+        panelHit.SetActive(true);
+        textHit.text = "Counter Hit " + hitCount;
+        hitAnimator.SetInteger("Hit", Random.Range(1, 3));
+    }
+    public void CloseHitCountAnimator()
+    {
+        Debug.Log("CloseHitCountAnimator");
+        hitAnimator.SetInteger("Hit", 0);
+        panelHit.SetActive(false);
     }
 }

@@ -38,7 +38,9 @@ public class Board_Manager : MonoBehaviour
 	public static Board_Manager Instance { get => instance; }
 
 	private const float DoTweenDuration = 0.25f;
-    [SerializeField] private List<Item> boardItemList = new List<Item>();
+	//[SerializeField, Range(0f, 1f)] private float lockedChance;
+	[SerializeField, Range(0f, 1f)] private float lockedCountChance = 0.1f;
+	[SerializeField] private List<Item> boardItemList = new List<Item>();
 
 	private int score;
 	private int scoreAdd = 0;
@@ -99,8 +101,8 @@ public class Board_Manager : MonoBehaviour
 	public void SetTiles(Vector2Int tileCoordinate, Tile tile)
 	{
 		Item item = BoardItemList[Random.Range(0, BoardItemList.Count)];
-		int lockedCount = Random.value < 0.1f ? Random.Range(1, 3) : 0;
-		bool isLocked = Random.value < 0.1f ? true : false;
+		int lockedCount = Random.value < lockedCountChance ? Random.Range(1, 3) : 0;
+		//bool isLocked = Random.value < lockedChance ? true : false;
 		//tile.SetMyBoardTile(new BoardTile(item));
 		tile.SetMyBoardTile(new BoardTile(item, lockedCount));
 		//tile.SetMyBoardTile(new BoardTile(item, lockedCount, isLocked));
@@ -139,6 +141,7 @@ public class Board_Manager : MonoBehaviour
 		if (choosedTiles.Count == 0)
 		{
 			choosedTiles.Add(tile);
+			EffectFirstChoosedTile();
 		}
 		else if (choosedTiles.Contains(tile))
 		{
@@ -153,11 +156,27 @@ public class Board_Manager : MonoBehaviour
 			}
 			choosedTiles.Add(tile);
 			waitForChoosing = true;
-			
+			DOTween.To(value => { }, startValue: 0, endValue: 1, duration: DoTweenDuration * 3);
 			SwapTile(choosedTiles[0], choosedTiles[1]);
 		}
 	}
-
+	private void EffectFirstChoosedTile()
+    {
+        Transform firstTile = choosedTiles[0].transform;
+        firstTile.DOScale(Vector3.one * 1.25f, DoTweenDuration).OnComplete(() =>
+		{
+			if (firstTile != null)
+			{
+				firstTile.DOScale(Vector3.one, DoTweenDuration).OnComplete(() =>
+				{
+					if (firstTile != null)
+					{
+						EffectFirstChoosedTile();
+					}
+				});
+			}
+		});
+    }
 	/// <summary>
 	/// Check tiles for neighbor. If they are not neighbor, don't choose tile.
 	/// </summary>
@@ -277,6 +296,7 @@ public class Board_Manager : MonoBehaviour
 	/// </summary>
 	private void CheckMatch()
 	{
+		DOTween.Kill(choosedTiles[0].gameObject);
 		List<Tile> controllingList = new List<Tile>();
 		List<Tile> checkedList = new List<Tile>();
 		List<Tile> selected = new List<Tile>();
@@ -314,8 +334,7 @@ public class Board_Manager : MonoBehaviour
 		{
 			// We found horizontal match for 0. Element
 			firstElementList.AddRange(controllingList);
-			scoreMulti++;
-			scoreAdd += controllingList[0].MyBoardTile.item.point * scoreMulti * controllingList.Count;
+			AddScore(controllingList[0].MyBoardTile.item.point, controllingList.Count);
 		}
 
 		// Checking 0. Element - Vertical
@@ -359,8 +378,7 @@ public class Board_Manager : MonoBehaviour
 				// We found vertical match for 0. Element
 				firstElementList.AddRange(controllingList);
 			}
-			scoreMulti++;
-			scoreAdd += controllingList[0].MyBoardTile.item.point * scoreMulti * controllingList.Count;
+			AddScore(controllingList[0].MyBoardTile.item.point, controllingList.Count);
 		}
 
 		// Checking 1. Element - Horizontal
@@ -397,8 +415,7 @@ public class Board_Manager : MonoBehaviour
 		{
 			// We found vertical match for 1. Element
 			secondElementList.AddRange(controllingList);
-			scoreMulti++;
-			scoreAdd += controllingList[0].MyBoardTile.item.point * scoreMulti * controllingList.Count;
+			AddScore(controllingList[0].MyBoardTile.item.point, controllingList.Count);
 		}
 
 		// Checking 1. Element - Vertical
@@ -442,8 +459,7 @@ public class Board_Manager : MonoBehaviour
 				// We found vertical match for 1. Element
 				secondElementList.AddRange(controllingList);
 			}
-			scoreMulti++;
-			scoreAdd += controllingList[0].MyBoardTile.item.point * scoreMulti * controllingList.Count;
+			AddScore(controllingList[0].MyBoardTile.item.point, controllingList.Count);
 		}
 
 		selected.AddRange(firstElementList);
@@ -495,6 +511,12 @@ public class Board_Manager : MonoBehaviour
 			SwapTile(choosedTiles[0], choosedTiles[1], false);
 			ClearMatchControlling();
 		}
+	}
+	private void AddScore(int point, int controllingListCount)
+	{
+		scoreMulti++;
+		Canvas_Manager.Instance.OpenHitCountAnimator(scoreMulti);
+		scoreAdd += point * scoreMulti * controllingListCount;
 	}
 	public void ClearMatchControlling()
 	{
@@ -628,8 +650,7 @@ public class Board_Manager : MonoBehaviour
 						// Check horizontal match list
 						if (horizontalElementList.Count > 2)
 						{
-							scoreMulti++;
-							scoreAdd += horizontalElementList[0].MyBoardTile.item.point * scoreMulti * horizontalElementList.Count;
+							AddScore(horizontalElementList[0].MyBoardTile.item.point, horizontalElementList.Count);
 							newHorizontalMatchElementList.AddRange(horizontalElementList);
 						}
 					}
@@ -672,8 +693,7 @@ public class Board_Manager : MonoBehaviour
 						// Check vertical match list
 						if (verticalElementList.Count > 2)
 						{
-							scoreMulti++;
-							scoreAdd += verticalElementList[0].MyBoardTile.item.point * scoreMulti * verticalElementList.Count;
+							AddScore(verticalElementList[0].MyBoardTile.item.point, verticalElementList.Count);
 							newVerticalMatchElementList.AddRange(verticalElementList);
 						}
 					}
