@@ -1,5 +1,5 @@
 # Bilgilendirme Videoları
-Oyun boardı nasıl düzenlenir, boyutları nasıl ayarlanır, hangi itemler gösterilir? Bunlarla ilgili kısa video.
+How to organize the game board, how to adjust its dimensions, what items are displayed? Short video about these.
 
 https://youtu.be/mCRODQsRCx0
 
