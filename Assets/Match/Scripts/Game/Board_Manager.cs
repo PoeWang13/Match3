@@ -498,6 +498,7 @@ public class Board_Manager : MonoBehaviour
 	/// </summary>
 	private void SendDownTiles()
 	{
+		UnityEditor.EditorApplication.isPaused = true;
 		List<Tile> downedTiles = new List<Tile>();
 		for (int e = 0; e < Width; e++)
 		{
@@ -550,9 +551,8 @@ public class Board_Manager : MonoBehaviour
         // Send to all tiles from top side (full place) to down side (null places)
         for (int e = 0; e < downedTiles.Count; e++)
         {
-            Vector2 endPos = new Vector2(downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y) * 100 + (Vector2)Game_Manager.Instance.BoardPosition;
+            Vector2 endPos = new Vector2(downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y) * 100 + Vector2.one * 50;
 			RectTransform rect = Tiles[downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y].GetComponent<RectTransform>();
-			endPos.x = rect.anchoredPosition.x;
 			
 			rect.DOAnchorPos(endPos, DoTweenDuration * 0.5f);
             Tiles[downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y].SetMyNeighbors(true);
