@@ -98,8 +98,8 @@ public class Board_Manager : MonoBehaviour
 		}
 
 		Canvas_Manager.Instance.SetBoardView(myTile, boardPosition);
-		FindNewMatch();
-	}
+        FindNewMatch();
+    }
 	public void SetTiles(Vector2Int tileCoordinate, Tile tile)
 	{
 		Item item = BoardItemList[Random.Range(0, BoardItemList.Count)];
@@ -130,7 +130,6 @@ public class Board_Manager : MonoBehaviour
 		(Tile[], Tile[]) myAllNeighbors;
 		myAllNeighbors.Item1 = myVNeighbors;
 		myAllNeighbors.Item2 = myHNeighbors;
-		//return myNeighbors;
 		return myAllNeighbors;
 	}
 
@@ -185,43 +184,6 @@ public class Board_Manager : MonoBehaviour
 	/// <returns>True is they are neighbors, false is they are not neighbors.</returns>
 	private bool AreWeNeighbor(Tile tile1, Tile tile2)
 	{
-        //int x1 = tile1.MyCoordinate.x;
-        //int y1 = tile1.MyCoordinate.y;
-        //int x2 = tile2.MyCoordinate.x;
-        //int y2 = tile2.MyCoordinate.y;
-        //// Check Left
-        //if (x1 != 0)
-        //{
-        //  if (x1 - 1 == x2)
-        //	{
-        //		return true;
-        //	}
-        //}
-        //// Check Right
-        //if (x1 != width - 1)
-        //{
-        //	if (x1 + 1 == x2)
-        //	{
-        //		return true;
-        //	}
-        //}
-        //// Check Down
-        //if (y1 != 0)
-        //{
-        //   if (y1 - 1 == y2)
-        //	{
-        //		return true;
-        //	}
-        //}
-        //// Check Up
-        //if (y1 != height - 1)
-        //{
-        //	if (y1 + 1 == y2)
-        //	{
-        //		return true;
-        //	}
-        //}
-        //return false;
         if (Array.IndexOf(tile1.MyHorizontalNeighbors, tile2) != -1)
 		{
 			return true;
@@ -231,7 +193,6 @@ public class Board_Manager : MonoBehaviour
 			return true;
 		}
         return false;
-        //return Array.IndexOf(tile1.MyNeighbors, tile2.MyBoardTile) != -1;
     }
 	
 	[ContextMenu("Swap Tile")]
@@ -590,15 +551,17 @@ public class Board_Manager : MonoBehaviour
         for (int e = 0; e < downedTiles.Count; e++)
         {
             Vector2 endPos = new Vector2(downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y) * 100 + (Vector2)Game_Manager.Instance.BoardPosition;
-            RectTransform rect = Tiles[downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y].GetComponent<RectTransform>();
-            rect.DOAnchorPos(endPos, DoTweenDuration * 0.5f);
+			RectTransform rect = Tiles[downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y].GetComponent<RectTransform>();
+			endPos.x = rect.anchoredPosition.x;
+			
+			rect.DOAnchorPos(endPos, DoTweenDuration * 0.5f);
             Tiles[downedTiles[e].MyCoordinate.x, downedTiles[e].MyCoordinate.y].SetMyNeighbors(true);
         }
 
 		DOTween.To(value => { }, startValue: 0, endValue: 1, duration: DoTweenDuration * 0.5f)
 			.OnComplete(() =>
 			{
-                FindNewMatch();
+				FindNewMatch();
             });
 		for (int e = 0; e < swapTiles.Count; e++)
 		{

@@ -49,7 +49,7 @@ public class Canvas_Manager : MonoBehaviour
             {
                 Vector2Int coordinate = new Vector2Int(h, e);
                 Tile tile = Instantiate(tilePrefab, tileParent);
-                tile.transform.position = new Vector3(h + 1, e + 1, 0) * 100;
+                tile.transform.localPosition = new Vector3(h, e, 0) * 100 + new Vector3(50, 50, 0);
                 tile.name = "Tile > x : " + h + " --- y : " + e;
                 Board_Manager.Instance.SetTiles(coordinate, tile);
             }
@@ -73,7 +73,7 @@ public class Canvas_Manager : MonoBehaviour
     public Tile CreateTiles(int coordinate, int height)
     {
         Tile tile = Instantiate(tilePrefab, tileParent);
-        tile.transform.position = new Vector3(coordinate + 1, height, 0) * 100;
+        tile.transform.localPosition = new Vector3(coordinate, height, 0) * 100 + new Vector3(50, 50, 0);
 
         return tile;
     }
