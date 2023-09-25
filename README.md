@@ -1,3 +1,8 @@
+# Bilgilendirme Videoları
+Oyun boardı nasıl düzenlenir, boyutları nasıl ayarlanır, hangi itemler gösterilir? Bunlarla ilgili kısa video.
+
+https://youtu.be/mCRODQsRCx0
+
 # Match3
 Game where 3 objects are matched.
 
