@@ -498,7 +498,7 @@ public class Board_Manager : MonoBehaviour
 	/// </summary>
 	private void SendDownTiles()
 	{
-		UnityEditor.EditorApplication.isPaused = true;
+		//UnityEditor.EditorApplication.isPaused = true;
 		List<Tile> downedTiles = new List<Tile>();
 		for (int e = 0; e < Width; e++)
 		{
