@@ -1237,6 +1237,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 90d12306475dc594094855000b679374, type: 2}
   - {fileID: 11400000, guid: d7983419600860443b2c5b0c4f95d2d3, type: 2}
   - {fileID: 11400000, guid: 3cd3b7cf3590d914b9c1bfcfb574214f, type: 2}
+  - {fileID: 11400000, guid: 53bedb645f4d4c844b23b92d82fc6e2d, type: 2}
 --- !u!114 &2129533479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1269,8 +1270,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddcecfa830ad974b830f4f7302469b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardSize: {x: 6, y: 4}
-  boardPosition: {x: 50, y: 50, z: 0}
+  boardSize: {x: 10, y: 8}
+  boardPosition: {x: 350, y: 150, z: 0}
 --- !u!4 &2129533481
 Transform:
   m_ObjectHideFlags: 0
