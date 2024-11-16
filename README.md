@@ -1,3 +1,8 @@
+# Informational Video
+How to organize the game board, how to adjust its dimensions, what items are displayed? Short video about these.
+
+https://youtu.be/mCRODQsRCx0
+
 # Match3
 Game where 3 objects are matched.
 
